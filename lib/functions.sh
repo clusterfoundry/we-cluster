@@ -17,14 +17,15 @@ function getNodeInfo() {
 		;;
 		*)
 			echo "SCRIPT ERR"
-			exit 2
+			return 2
 		;;
 	esac
 }
 
 function getNodePassword() {
 	# Param: getNodePassword <WEB|MYSQL|STORAGE> <ip address>
-	[ $1 -a $2 ] || exit 2
+	[ $1 -a $2 ] || return 2
+	return 0
 }
 
 function msg() {
@@ -41,4 +42,31 @@ function check_bin() {
 		fi
 		echo $path
 	done
+}
+
+function getDPApps() {
+	dp_user=`cat "$DEVPANEL_APPS_FILE" | sed 's/#.*//g' | sed '/^\s*$/d'`
+	if [ x"$dp_user" == x"" ]; then
+		return 1
+	else
+		echo -n "$dp_user"
+	fi
+	exit 0
+}
+
+function dumpVars() {
+	for var in $*; do
+		eval "echo $var=\\\"\"\$$var\"\\\"" >&2
+	done
+}
+
+function getDP_rootPass() {
+	dp_user=$1
+	dp_pass=`cat "$DEVPANEL_PASSWD_FILE" | egrep "^${dp_user}:" | awk -F: '{print $9}'`
+	if [ x"$dp_pass" == x"" ]; then
+		return 1
+	else
+		echo -n "$dp_pass"
+	fi
+	exit 0
 }
