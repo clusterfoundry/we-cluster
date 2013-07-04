@@ -29,7 +29,7 @@ function getNodePassword() {
 }
 
 function msg() {
-	echo "$*" | logger -t local0.info -s
+	echo "+ $*" | logger -t local0.info -s
 }
 
 function check_bin() {
@@ -56,7 +56,7 @@ function getDPApps() {
 
 function dumpVars() {
 	for var in $*; do
-		eval "echo $var=\\\"\"\$$var\"\\\"" >&2
+		eval "echo $var=\\\"\"\$$var\"\\\""
 	done
 }
 
