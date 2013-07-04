@@ -20,4 +20,15 @@ DP_APP_DB_SOCKET=`[ -S "$DP_APP_DB_HOME/mysql.sock" ] && echo "$DP_APP_DB_HOME/m
 DP_APP_DB_USER=root
 DP_APP_DB_PASS=`getDP_rootPass $DP_APP_DB_OWNER`
 
-dumpVars DP_APP DP_APP_DB_OWNER DP_APP_DB_HOME DP_APP_DB_SOCKET DP_APP_DB_USER DP_APP_DB_PASS
+vars=`dumpVars DP_APP DP_APP_DB_OWNER DP_APP_DB_HOME DP_APP_DB_SOCKET DP_APP_DB_USER DP_APP_DB_PASS`
+#echo "$vars"
+mysql_vars=`echo "$vars" | sed 's/$/ \\\\/g'`
+
+eval "$mysql_vars
+$CLUSTER_HOME/bin/52-dump_table_grants.sh"
+
+eval "$mysql_vars
+$CLUSTER_HOME/bin/53-dump_schemas.sh"
+
+echo "$SCRIPT_NAME: SCRIPT OK"
+exit 0
