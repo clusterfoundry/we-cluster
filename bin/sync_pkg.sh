@@ -32,5 +32,5 @@ dpkg --set-selections 2>&1 < $PKGLIST_FILE || exitscript $?
 # apt-get as frontend to dselect, installing marked packages
 apt-get dselect-upgrade -y 2>&1 || exitscript $?
 
-# add next script to process on rc.local
-reboot >/dev/null 2>&1; exitscript 0
+echo "SCRIPT OK"
+reboot >/dev/null 2>&1

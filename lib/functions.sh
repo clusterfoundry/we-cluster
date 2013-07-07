@@ -15,6 +15,10 @@ function getNodeInfo() {
 			echo "$STORAGE_CLUSTER_MEMBERS" \
 			| sed 's/|/\n/g'
 		;;
+		SSH)
+			echo "$SSH_CLUSTER_MEMBERS" \
+			| sed 's/|/\n/g'
+		;;
 		*)
 			echo "SCRIPT ERR"
 			return 2
@@ -30,6 +34,12 @@ function getNodePassword() {
 
 function msg() {
 	echo "+ $*" | logger -t local0.info -s
+}
+
+function exitmsg() {
+	exitcode=$1; shift
+	echo "+ ERROR: $*" | logger -t local0.err -s
+	exit $exitcode
 }
 
 function check_bin() {

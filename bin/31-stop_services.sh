@@ -1,15 +1,16 @@
-#!/bin/bash -uv
+#!/bin/bash -u
 
-CLUSTER_CONFIG_FILE=/opt/webenabled/cluster/etc/cluster.conf
-SCRIPT_LIBRARY=/opt/webenabled/cluster/lib/functions.sh
+CLUSTER_HOME=/opt/webenabled/cluster
+CLUSTER_CONFIG_FILE=$CLUSTER_HOME/etc/cluster.conf
+SCRIPT_LIBRARY=$CLUSTER_HOME/lib/functions.sh
 SCRIPT_ABSPATH=`readlink -f $0`
 SCRIPT_DIR=`dirname "$SCRIPT_ABSPATH"`
 SCRIPT_NAME=`basename $0`
 
-# load functions
-source $SCRIPT_LIBRARY || exit 2
 # load configurations
 source "$CLUSTER_CONFIG_FILE" || exit 2
+# load functions
+source $SCRIPT_LIBRARY || exit 2
 
 
 # stop apache
@@ -35,3 +36,6 @@ for i in {1..10}; do
 	pidof mysqld_safe || break
 	echo "mysqld_safe not stopped, going to loop #$i"
 done
+
+echo "$SCRIPT_NAME: SCRIPT OK"
+exit 0

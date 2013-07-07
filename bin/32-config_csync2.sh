@@ -25,11 +25,12 @@ EOF
 CSYNC_CONFIG_CONTENTS=
 storage_node=`getNodeInfo STORAGE | awk -F: '{print $1}'`
 for node_ip in $storage_node; do
-	echo "Connecting to $node_ip"
+	msg "Connecting to $node_ip"
 	node_rootpass='1P@ssw0rd9'
 	node_hostname=`SSHPASS=$node_rootpass \
 		       sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@$node_ip \
 		       'hostname'`
+	msg "$SCRIPT_NAME: ${node_ip} -> ${node_hostname}"
 	[ $? -eq 0 ] && echo -e "\thostname ${node_hostname};" >> $csync2_config
 done
 
@@ -52,12 +53,12 @@ cat << EOF >> $csync2_config
 EOF
 
 # copy csync2 config to $CLUSTER_HOME/etc/
-#cat $csync2_config > $CLUSTER_HOME/etc/csync2-$CLUSTER_NAME.cfg
+cat $csync2_config > $CLUSTER_HOME/etc/csync2-$CLUSTER_NAME.cfg
 
 # create symbolic link
-#rm /etc/csync2.cfg
-#ln -s $CLUSTER_HOME/etc/csync2-$CLUSTER_NAME.cfg /etc/csync2.cfg
+rm /etc/csync2.cfg
+ln -s $CLUSTER_HOME/etc/csync2-$CLUSTER_NAME.cfg /etc/csync2.cfg
 
-echo "CSYNC2 Temporary Config File: $csync2_config"
-echo "SCRIPT OK"
+msg "$SCRIPT_NAME: CSYNC2 Temporary Config File: $csync2_config"
+msg "$SCRIPT_NAME: SCRIPT OK"
 exit 0
