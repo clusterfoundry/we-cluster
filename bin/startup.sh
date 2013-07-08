@@ -1,1 +1,1 @@
-date > /tmp/x
+touch /tmp/pogi
