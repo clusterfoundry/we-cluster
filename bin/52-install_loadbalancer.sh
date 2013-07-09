@@ -12,5 +12,11 @@ source "$CLUSTER_CONFIG_FILE" || exit 2
 # load functions
 source $SCRIPT_LIBRARY || exit 2
 
+# install haproxy
+apt-get install haproxy || exitmsg 1 "$SCRIPT_NAME: Error installing haproxy"
+
+# enable haproxy
+sed 's/ENABLED=0/ENABLED=1/g' -i /etc/default/haproxy
+
 msg "$SCRIPT_NAME: SCRIPT OK"
 exit 0

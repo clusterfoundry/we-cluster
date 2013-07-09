@@ -11,6 +11,3 @@ SCRIPT_NAME=`basename $0`
 source "$CLUSTER_CONFIG_FILE" || exit 2
 # load functions
 source $SCRIPT_LIBRARY || exit 2
-
-msg "$SCRIPT_NAME: SCRIPT OK"
-exit 0

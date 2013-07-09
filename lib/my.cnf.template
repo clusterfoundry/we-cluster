@@ -1,0 +1,18 @@
+[mysqld]
+user			= mysql
+log_error		= /var/log/mysql/error.log
+default-storage-engine	= innodb
+
+innodb_autoinc_lock_mode = 2
+innodb_locks_unsafe_for_binlog = 1
+binlog_format		= ROW
+innodb-file-per-table
+
+bind-address		= |bind-address|
+port			= |port|
+wsrep_cluster_name	= |wsrep_cluster_name|
+wsrep_cluster_address	= "|wsrep_cluster_address|"
+wsrep_provider		= |wsrep_provider|
+wsrep_sst_method	= |wsrep_sst_method|
+wsrep_sst_auth		= |wsrep_sst_auth|
+

@@ -1,0 +1,26 @@
+global
+        log 127.0.0.1 local0
+        maxconn 4096
+        uid 99
+        gid 99
+        daemon
+
+defaults
+        log global
+        mode http
+        option dontlognull
+        retries 3
+        option redispatch
+        maxconn 2000
+        contimeout 5000
+        timeout client 50000
+        timeout server 500000
+
+listen stats 0.0.0.0:81
+	mode http
+	stats enable
+	stats hide-version
+	stats uri /
+	stats realm Statistics
+	stats auth haproxy:loadbalancer
+

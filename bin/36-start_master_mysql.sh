@@ -12,5 +12,8 @@ source "$CLUSTER_CONFIG_FILE" || exit 2
 # load functions
 source $SCRIPT_LIBRARY || exit 2
 
+# start mysql on master only
+service mysql start || exitmsg 1 "Error starting MySQL Cluster on devPanel node"
+
 msg "$SCRIPT_NAME: SCRIPT OK"
 exit 0
