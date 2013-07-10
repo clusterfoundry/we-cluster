@@ -16,7 +16,7 @@ source $SCRIPT_LIBRARY || exit 2
 apt-get remove --purge -y mysql-client-5.5 mysql-client-core-5.5 mysql-common mysql-server mysql-server-5.5 mysql-server-core-5.5
 
 # move configuration file
-mv /etc/mysql /etc/mysql.old
+mv /etc/mysql/my.cnf /etc/mysql/my.cnf.old
 mv /etc/my.cnf /etc/my.cnf.old
 
 msg "$SCRIPT_NAME: SCRIPT OK"
