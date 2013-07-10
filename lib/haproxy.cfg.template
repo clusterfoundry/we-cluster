@@ -15,6 +15,7 @@ defaults
         contimeout 5000
         timeout client 50000
         timeout server 500000
+	balance roundrobin
 
 listen stats 0.0.0.0:81
 	mode http
