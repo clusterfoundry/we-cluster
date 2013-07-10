@@ -33,7 +33,7 @@ apt-get update
 
 # install percona xtradb cluster
 msg "$SCRIPT_NAME: Install Percona XtraDB Cluster"
-apt-get install -y percona-xtradb-cluster-server-5.5 php5-mysql
+DEBIAN_FRONTEND=noninteractive TERM= apt-get install -y percona-xtradb-cluster-server-5.5 php5-mysql
 
 msg "$SCRIPT_NAME: SCRIPT OK"
 exit 0
