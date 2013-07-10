@@ -20,7 +20,7 @@ $CLUSTER_HOME/bin/35-backup_old_mysql.sh || exitmsg 1 "Error executing $CLUSTER_
 $CLUSTER_HOME/bin/36-start_master_mysql.sh || exitmsg 1 "Error executing $CLUSTER_HOME/bin/36-start_master_mysql.sh"
 $CLUSTER_HOME/bin/37-restore_schema.sh || exitmsg 1 "Error executing $CLUSTER_HOME/bin/37-restore_schema.sh"
 $CLUSTER_HOME/bin/38-restore_users.sh || exitmsg 1 "Error executing $CLUSTER_HOME/bin/38-restore_users.sh"
-$CLUSTER_HOME/bin/39-stop_mysql || exitmsg 1 "Error executing $CLUSTER_HOME/bin/39-stop_mysql"
+$CLUSTER_HOME/bin/39-stop_mysql.sh || exitmsg 1 "Error executing $CLUSTER_HOME/bin/39-stop_mysql.sh"
 
 msg "$SCRIPT_NAME: SCRIPT OK"
 exit 0
