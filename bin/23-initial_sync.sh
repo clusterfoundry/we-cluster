@@ -28,8 +28,8 @@ for node_ip in $storage_node; do
         fi
 
 	node_rootpass='1P@ssw0rd9'
-	echo tar -C / -czf - $includes
-#	tar -C / -czf - $includes | \
-#	SSHPASS=$node_rootpass sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@$node_ip \
-#		"tar -C / -xvzf - || echo \"SCRIPT ERR \$?\"" | sed 's/^/['$node_ip'] >> /g'
+#	echo tar -C / -czf - $includes
+	tar -C / -czf - $includes | \
+	SSHPASS=$node_rootpass sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@$node_ip \
+		"tar -C / -xzf - 2>&1 || echo \"SCRIPT ERR \$?\"" | sed 's/^/['$node_ip'] >> /g'
 done

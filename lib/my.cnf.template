@@ -2,6 +2,7 @@
 user			= mysql
 log_error		= /var/log/mysql/error.log
 default-storage-engine	= innodb
+max_connect_errors	= 99999999999999
 
 innodb_autoinc_lock_mode = 2
 innodb_locks_unsafe_for_binlog = 1

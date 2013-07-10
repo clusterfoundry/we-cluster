@@ -25,7 +25,8 @@ msg "$SCRIPT_NAME: Backup /opt/webenabled/compat/apache_include/virtwww.conf"
 cp -pR /opt/webenabled/compat/apache_include/virtwww.conf /opt/webenabled/compat/apache_include/virtwww.conf.old || exitmsg 1 "$SCRIPT_NAME: Cannot create backup of virtwww.conf"
 msg "$SCRIPT_NAME: Change port from 80 -> 10080"
 cat /opt/webenabled/compat/apache_include/virtwww.conf.old \
-	| sed 's/\$IP:80/$IP:10080/Ig' > /opt/webenabled/compat/apache_include/virtwww.conf
+	| sed 's/\$IP:80/$IP:10080/Ig' \
+	| sed 's/\$IP:443/$IP:10443/Ig' > /opt/webenabled/compat/apache_include/virtwww.conf
 
 # change ports on /opt/webenabled/compat/apache_include/vhost-ssl.conf
 msg "$SCRIPT_NAME: Backup /opt/webenabled/compat/apache_include/vhost-ssl.conf"
@@ -35,5 +36,5 @@ cat /opt/webenabled/compat/apache_include/vhost-ssl.conf.old \
 	| sed 's/ \$IP:80/ \$IP:10080/Ig' \
 	| sed 's/ \$IP:443/ \$IP:10443/Ig' > /opt/webenabled/compat/apache_include/vhost-ssl.conf
 
-msg "$SCRIPT_NAME: SCRIPT OK:
+msg "$SCRIPT_NAME: SCRIPT OK"
 exit 0

@@ -12,7 +12,9 @@ source "$CLUSTER_CONFIG_FILE" || exit 2
 # load functions
 source $SCRIPT_LIBRARY || exit 2
 
-$CLUSTER_HOME/bin/11-node_hostnames.sh || exitmsg 1 "Error processing $CLUSTER_HOME/bin/11-node_hostnames.sh"
+$CLUSTER_HOME/bin/11-install_sshpass.sh || exitmsg 1 "Error processing $CLUSTER_HOME/bin/11-install_sshpass.sh"
+
+$CLUSTER_HOME/bin/12-node_hostnames.sh || exitmsg 1 "Error processing $CLUSTER_HOME/bin/12-node_hostnames.sh"
 
 echo "$SCRIPT_NAME: SCRIPT OK"
 exit 0

@@ -13,9 +13,11 @@ source "$CLUSTER_CONFIG_FILE" || exit 2
 source $SCRIPT_LIBRARY || exit 2
 
 # create temporary config file
-csync2_config=`mktemp /tmp/csync2.cfg.XXXXX` || exit 1
+csync2_config=`mktemp /tmp/csync2.cfg.XXXXX` || exitmsg 1 "Error creating temporary file"
+msg "$SCRIPT_NAME: Temporary file $csync2_config created"
 
 # 1st part of csync2 config
+msg "Generating 1st part of csync2 config"
 cat << EOF > $csync2_config
 nossl * *;
 
@@ -36,6 +38,7 @@ done
 
 # create include on CSYNC2 config
 # add empty line
+msg "Constructing csync2 configuration 'include' block"
 echo >> $csync2_config
 includes=`echo "$CSYNC2_INCLUDE" | sed 's/|/\n/g'`
 for include in $includes; do
@@ -44,6 +47,7 @@ for include in $includes; do
 done
 
 # write bottom part of the config
+msg "Generating last part of csync2 config"
 echo "$includes"
 cat << EOF >> $csync2_config
 
@@ -53,9 +57,11 @@ cat << EOF >> $csync2_config
 EOF
 
 # copy csync2 config to $CLUSTER_HOME/etc/
+msg "Save configuration to $CLUSTER_HOME/etc/csync2-$CLUSTER_NAME.cfg"
 cat $csync2_config > $CLUSTER_HOME/etc/csync2-$CLUSTER_NAME.cfg
 
-# create symbolic link
+# create symbolic linkCLUSTER_NAME.cfg"
+msg "Create symbolic link to /etc/csync2.cfg"
 rm /etc/csync2.cfg
 ln -s $CLUSTER_HOME/etc/csync2-$CLUSTER_NAME.cfg /etc/csync2.cfg
 

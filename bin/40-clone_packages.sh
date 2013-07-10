@@ -65,5 +65,9 @@ for node_ip in $ssh_node; do
 		"cat - > /tmp/sync_pkg.sh; chmod +x /tmp/sync_pkg.sh; /tmp/sync_pkg.sh /tmp/pkglist" | sed 's/^/['$node_ip'] >> /g'
 done
 
+$CLUSTER_HOME/bin/41-disable_remote_services.sh || exitmsg 1 "Error executing $CLUSTER_HOME/bin/41-disable_remote_services.sh"
+$CLUSTER_HOME/bin/42-remote_reboot.sh || exitmsg 1 "Error executing $CLUSTER_HOME/bin/42-remote_reboot.sh"
+$CLUSTER_HOME/bin/43-initial_mysql_sync.sh || exitmsg 1 "Error executing $CLUSTER_HOME/bin/43-initial_mysql_sync.sh"
+
 msg "$SCRIPT_NAME: SCRIPT OK"
 exit 0

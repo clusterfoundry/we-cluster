@@ -28,8 +28,13 @@ for node_ip in $storage_node; do
         fi
 
 	node_rootpass='1P@ssw0rd9'
-	echo tar -C / -czf - $includes
-#	tar -C / -czf - $includes | \
+
+#	msg "Delete $includes /var/log/apache2 on $node_ip"
 #	SSHPASS=$node_rootpass sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@$node_ip \
-#		"tar -C / -xvzf - || echo \"SCRIPT ERR \$?\"" | sed 's/^/['$node_ip'] >> /g'
+#	"rm -rf $includes /var/log/apache2" | sed 's/^/['$node_ip'] >> /g'
+
+	msg "Copy $includes /var/log/apache2 to $node_ip"
+	tar -C / -czf - $includes /var/log/apache2 | \
+	SSHPASS=$node_rootpass sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@$node_ip \
+		"rm -rf $includes /var/log/apache2; tar -C / -xzf - 2>&1 || echo \"SCRIPT ERR \$?\"" | sed 's/^/['$node_ip'] >> /g'
 done
