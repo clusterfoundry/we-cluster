@@ -33,12 +33,12 @@ function getNodePassword() {
 }
 
 function msg() {
-	echo "+ $*" | logger -t local0.info -s
+	echo "+ $*:"
 }
 
 function exitmsg() {
 	exitcode=$1; shift
-	echo "+ ERROR: $*" | logger -t local0.err -s
+	echo "+ ERROR: $*"
 	exit $exitcode
 }
 
