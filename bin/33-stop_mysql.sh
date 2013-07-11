@@ -26,7 +26,7 @@ if [ x"$mysqld_pid" == x"" ]; then
 	msg "$SCRIPT_NAME: SCRIPT OK"
 	exit 0
 else
-	sleep 5
+	sleep 15
 	for pid in $mysqld_pid; do
 		msg "$SCRIPT_NAME: Kill(TERM) mysql pid $pid"
 		kill -9 $pid
@@ -34,7 +34,7 @@ else
 fi
 
 # if mysqld still runs, exit script
-sleep 10
+sleep 30
 mysqld_pid=`pidof mysqld`
 if [ x"$mysqld_pid" == x"" ]; then
 	msg "$SCRIPT_NAME: SCRIPT OK"
@@ -44,3 +44,13 @@ else
 	msg "$SCRIPT_NAME: SCRIPT ERROR"
 	exit 1
 fi
+
+# no other choice, we need to issue reboot
+# disable mysql service
+msg "$SCRIPT_NAME: Disabling MySQL service on statup"
+update-rc.d mysql disable
+mv /etc/init/mysql.conf /etc/init/mysql.conf.disabed
+
+msg "$SCRIPT_NAME: Issue REBOOT"
+reboot
+exit 0
