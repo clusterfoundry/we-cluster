@@ -39,10 +39,6 @@ mysqld_pid=`pidof mysqld`
 if [ x"$mysqld_pid" == x"" ]; then
 	msg "$SCRIPT_NAME: SCRIPT OK"
 	exit 0
-else
-	msg "$SCRIPT_NAME: Failed to stop mysqld"
-	msg "$SCRIPT_NAME: SCRIPT ERROR"
-	exit 1
 fi
 
 # no other choice, we need to issue reboot
