@@ -14,7 +14,7 @@ source "$CLUSTER_CONFIG_FILE" || exit 2
 
 # install csync2 and other csync2id dependencies
 msg "$SCRIPT_NAME: Installing csync2 and dependencies"
-apt-get install -y wget csync2 liblinux-inotify2-perl libnet-server-perl || exitmsg 1 "Unable to install packages"
+apt-get install -y wget csync2 liblinux-inotify2-perl libnet-server-perl sshpass || exitmsg 1 "Unable to install packages"
 
 # generate csync2 key
 msg "$SCRIPT_NAME: Generating csync2 key. This may take a while."
