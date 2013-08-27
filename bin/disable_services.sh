@@ -27,6 +27,7 @@ mv /etc/init/mysql.conf /etc/init/mysql.conf.disabled
 echo "Disabling devPanel taskd and dbmgr"
 mv /etc/init/taskd.conf /etc/init/taskd.conf.disabled
 mv /etc/init/dbmgr.conf /etc/init/dbmgr.conf.disabled
+update-rc.d devpanel-dbmgr disable
 
 echo "SCRIPT OK"
 reboot >/dev/null 2>&1
