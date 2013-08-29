@@ -28,12 +28,14 @@ for node_ip in $ssh_node; do
 	[ -e $mysql_tar_file ] && rm -f $mysql_tar_file
 	tar -czf $mysql_tar_file $mysql_files || exitmsg 1 "$SCRIPT_NAME: Error creating TGZ file $mysql_tar_file"
 
+	wait_for_ssh $node_ip 22 5 20
 	# transfer mysql tgz file
 	msg "$SCRIPT_NAME: Transferring $mysql_tar_file to $node_ip"
 	cat "$mysql_tar_file" | SSHPASS="$node_pass" \
 		sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@$node_ip \
 		"tar -C / -xzf - || echo 'SCRIPT ERROR'" | sed 's/^/['$node_ip'] >> /g'
 
+	wait_for_ssh $node_ip 22 5 20
 	# change configuration of slave db's
 	msg "$SCRIPT_NAME: Link my.cnf -> my-slave.cnf"
 	SSHPASS="$node_pass" \

@@ -46,27 +46,32 @@ for node_ip in $ssh_node; do
 
 	msg "Sending package list to $node_ip"
 
+	wait_for_ssh $node_ip 22 5 20
 	# add percona repository
 	msg "$SCRIPT_NAME: Add Percona APT Repository"
 	cat "${SCRIPT_DIR}/add_percona_repo.sh" | SSHPASS="$node_pass" \
 		sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@$node_ip \
 		"cat - > /tmp/add_percona_repo.sh; chmod +x /tmp/add_percona_repo.sh; /tmp/add_percona_repo.sh" | sed 's/^/['$node_ip'] >> /g'
 
+	wait_for_ssh $node_ip 22 5 20
 	# transfer package list
 	msg "$SCRIPT_NAME: Transfer package list to ${node_ip}"
 	cat $TMPFILE | SSHPASS="$node_pass" \
 		sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@$node_ip \
 		"cat - | tee /tmp/pkglist" | sed 's/^/EXEC['$node_ip'] >> /g'
 
+	wait_for_ssh $node_ip 22 5 20
 	# execute script to transfer packagelist
 	msg "$SCRIPT_NAME: Install packages on ${node_ip}"
 	cat "${SCRIPT_DIR}/sync_pkg.sh" | SSHPASS="$node_pass" \
 		sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@$node_ip \
 		"cat - > /tmp/sync_pkg.sh; chmod +x /tmp/sync_pkg.sh; /tmp/sync_pkg.sh /tmp/pkglist" | sed 's/^/['$node_ip'] >> /g'
+
 done
 
 $CLUSTER_HOME/bin/41-disable_remote_services.sh || exitmsg 1 "Error executing $CLUSTER_HOME/bin/41-disable_remote_services.sh"
 $CLUSTER_HOME/bin/42-initial_mysql_sync.sh || exitmsg 1 "Error executing $CLUSTER_HOME/bin/42-initial_mysql_sync.sh"
+wait_for_ssh $node_ip 22 5 20
 $CLUSTER_HOME/bin/43-remote_reboot.sh || exitmsg 1 "Error executing $CLUSTER_HOME/bin/43-remote_reboot.sh"
 
 msg "$SCRIPT_NAME: SCRIPT OK"

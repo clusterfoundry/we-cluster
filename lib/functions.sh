@@ -80,3 +80,18 @@ function getDP_rootPass() {
 	fi
 	exit 0
 }
+
+# wait_for_ssh <server_ip> <ssh_port> <delay_during_retry> <delay_after_success>
+function wait_for_ssh() {
+	delay_fail=$3
+	delay_success=$4
+	server_ip="$1"
+	ssh_port=$2
+
+	while ! nc -vz $server_ip $ssh_port >/dev/null 2>&1; do
+		msg "$SCRIPT_NAME: SSH port $ssh_port closed. retry after $delay_fail seconds..."
+		sleep $delay_fail
+	done
+	msg "$SCRIPT_NAME: Connection success to SSH port ${ssh_port}. Wait for $delay_success to start services..."
+	sleep $delay_success
+}
