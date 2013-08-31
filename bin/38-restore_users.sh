@@ -37,9 +37,16 @@ msg "Set root password"
 
 #( cat $CLUSTER_HOME/export/mysql/mysqluser.root.*.sql; echo "FLUSH PRIVILEGES;" ) \
 #	| grep -vi "CREATE USER 'root'@" | egrep -v "^0;" | $mysql_cmd || exitmsg 1 "Error setting root password"
-( echo "CREATE USER 'root'@'%';"
-echo "GRANT ALL ON *.* to 'root'@'%';"
-echo "UPDATE mysql.user set password=password('1P@ssw0rd9') where user='root' and host='%'; FLUSH PRIVILEGES;" ) | $mysql_cmd || exitmsg 1 "Error setting root password"
+
+#( echo "CREATE USER 'root'@'%';"
+#echo "GRANT ALL ON *.* to 'root'@'%';"
+#echo "UPDATE mysql.user set password=password('1P@ssw0rd9') where user='root' and host='%'; FLUSH PRIVILEGES;" ) 
+cat - << EOF | $mysql_cmd || exitmsg 1 "Error setting root password"
+CREATE USER 'root'@'%';
+GRANT ALL ON *.* to 'root'@'%';
+UPDATE mysql.user set password=password('1P@ssw0rd9');
+
+EOF
 
 msg "$SCRIPT_NAME: SCRIPT OK"
 exit 0
