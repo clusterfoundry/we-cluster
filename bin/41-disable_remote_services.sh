@@ -22,6 +22,7 @@ for node_ip in $ssh_node; do
 
 	node_pass='1P@ssw0rd9'
 
+	wait_for_ssh $node_ip 22 5 20
 	# add percona repository
 	msg "$SCRIPT_NAME: Add Percona APT Repository"
 	cat "${SCRIPT_DIR}/disable_services.sh" | SSHPASS="$node_pass" \
