@@ -20,11 +20,13 @@ for node_ip in $ssh_node; do
 		continue
 	fi
 
+	mysql_nodes=`getNodeInfo MYSQL | awk -F: '{print $1}'`
+	mysql_master=`echo "$mysql_nodes" | head -n1`
 	node_pass='1P@ssw0rd9'
-	node_cmd='cat - > /tmp/enable_services.sh; chmod +x /tmp/enable_services.sh; /tmp/enable_services.sh'
+	node_cmd="cat - > /tmp/enable_services.sh; chmod +x /tmp/enable_services.sh; /tmp/enable_services.sh $mysql_master"
 
 	# execute enable_services.sh
-	msg "$SCRIPT_NAME: Enable services"
+	msg "$SCRIPT_NAME: Enable services -> $node_cmd"
 	cat "${SCRIPT_DIR}/enable_services.sh" | SSHPASS="$node_pass" \
 		sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@$node_ip \
 		"$node_cmd" | sed 's/^/['$node_ip'] >> /g'
