@@ -44,7 +44,8 @@ msg "Set root password"
 cat - << EOF | $mysql_cmd || exitmsg 1 "Error setting root password"
 CREATE USER 'root'@'%';
 GRANT ALL ON *.* to 'root'@'%';
-UPDATE mysql.user set password=password('1P@ssw0rd9');
+UPDATE mysql.user set password=password('1P@ssw0rd9')
+    WHERE mysql.user='root';
 
 EOF
 
